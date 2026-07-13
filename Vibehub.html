@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeHub | Музыка, клипы, кино</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #14141f;
+            --surface-alt: #1c1c2a;
+            --text: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6a6a80;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --border: rgba(255, 255, 255, 0.06);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 50px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --player-bg: rgba(0, 0, 0, 0.6);
+            --vibe-color: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            transition: --vibe-color 0.8s ease, background 0.8s ease;
+            background-image: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 60%);
+            padding-bottom: 120px;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: rgba(20, 20, 31, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .search-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 10px 20px;
+            flex: 1;
+            max-width: 440px;
+            transition: all var(--transition);
+        }
+
+        .search-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .search-wrap input {
+            background: none;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: var(--radius-xl);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: #fff;
+            font-family: inherit;
+            transition: all var(--transition);
+            white-space: nowrap;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 24px var(--accent-glow);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+        }
+
+        /* ============================================
+           КОНТЕНТ
+           ============================================ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            margin-top: -16px;
+        }
+
+        /* ============================================
+           СЕТКА АРТИСТОВ
+           ============================================ */
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .artist-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-align: center;
+            padding-bottom: 18px;
+            position: relative;
+        }
+
+        .artist-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-6px);
+        }
+
+        .artist-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: var(--surface-alt);
+            transition: all var(--transition);
+        }
+
+        .artist-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .artist-card .artist-name {
+            font-weight: 700;
+            margin-top: 14px;
+            font-size: 1.05rem;
+            color: #fff;
+        }
+
+        .artist-card .artist-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .artist-card .artist-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: var(--radius-xl);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* ============================================
+           ДЕТАЛЬНАЯ СТРАНИЦА АРТИСТА
+           ============================================ */
+        .artist-detail {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .artist-detail.open {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .artist-header {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+        }
+
+        .artist-header img {
+            width: 200px;
+            height: 200px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .artist-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .artist-header .meta {
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-size: 0.95rem;
+        }
+
+        .back-btn {
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ============================================
+           ТАБЫ
+           ============================================ */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            border-radius: var(--radius-xl);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+
+        .tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        .tab:hover:not(.active) {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .tab .tab-count {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-left: 4px;
+        }
+
+        /* ============================================
+           СПИСКИ ТРЕКОВ/КЛИПОВ
+           ============================================ */
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .track-item:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--surface-alt);
+        }
+
+        .track-item.playing {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+            background: var(--surface-alt);
+        }
+
+        .track-cover {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            background: var(--surface-alt);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .track-duration {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .track-add {
+            background: none;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 7px 16px;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 600;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .track-add:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ============================================
+           ФИЛЬМЫ / СЕРИАЛЫ
+           ============================================ */
+        .media-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all var(--transition);
+        }
+
+        .media-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .media-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .media-info {
+            flex: 1;
+        }
+
+        .media-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .media-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .media-year {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           ОЧЕРЕДЬ (ПЛЕЕР)
+           ============================================ */
+        .queue-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 31, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid var(--border);
+            padding: 14px 24px;
+            z-index: 150;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .queue-info {
+            flex: 1;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .queue-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .queue-artist {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .queue-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .queue-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .queue-btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .queue-btn.play-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .queue-list {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            max-width: 500px;
+            padding: 4px 0;
+        }
+
+        .queue-list::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .queue-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .queue-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 7px 14px;
+            font-size: 0.72rem;
+            white-space: nowrap;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .queue-item:hover {
+            border-color: var(--accent);
+        }
+
+        .queue-item.active {
+            border-color: var(--accent);
+            background: var(--surface-alt);
+        }
+
+        .queue-item .remove-queue {
+            color: #ef4444;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .queue-item .remove-queue:hover {
+            color: #fff;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        audio {
+            display: none;
+        }
+
+        /* ============================================
+           ВИДЕО-КОНТЕЙНЕР
+           ============================================ */
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 250;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        .video-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .artists-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 14px;
+            }
+
+            .artist-card img {
+                height: 170px;
+            }
+
+            .artist-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .artist-header img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .artist-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .queue-panel {
+                padding: 10px 16px;
+                gap: 10px;
+            }
+
+            .queue-list {
+                max-width: 100%;
+            }
+
+            .queue-info {
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo" onclick="showArtists()">Vibe<span>Hub</span></div>
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Поиск артистов, треков, клипов, фильмов..."
+                    oninput="handleSearch()">
+            </div>
+            <button class="btn btn-accent" onclick="playAllTracks()">▶ Воспроизвести всё</button>
+        </div>
+    </header>
+
+    <!-- КОНТЕНТ -->
+    <div class="container">
+        <div id="artistsView">
+            <div class="section-title">🎤 Артисты</div>
+            <div class="section-subtitle">Выберите исполнителя, чтобы послушать треки, посмотреть клипы и фильмы</div>
+            <div class="artists-grid" id="artistsGrid"></div>
+        </div>
+        <div id="artistDetail" class="artist-detail"></div>
+    </div>
+
+    <!-- ОЧЕРЕДЬ -->
+    <div class="queue-panel" id="queuePanel">
+        <div class="queue-info" onclick="scrollToCurrentInQueue()">
+            <div class="queue-title" id="currentTrack">Ничего не играет</div>
+            <div class="queue-artist" id="currentArtist"></div>
+        </div>
+        <div class="queue-controls">
+            <button class="queue-btn" onclick="prevTrack()" title="Назад">⏮</button>
+            <button class="queue-btn play-btn" onclick="togglePlay()" id="playBtn" title="Плей/Пауза">▶</button>
+            <button class="queue-btn" onclick="nextTrack()" title="Вперёд">⏭</button>
+        </div>
+        <div class="queue-list" id="queueList"></div>
+        <button class="btn btn-sm" onclick="clearQueue()" title="Очистить очередь">✕</button>
+    </div>
+
+    <!-- ВИДЕО-ОВЕРЛЕЙ -->
+    <div class="video-overlay" id="videoOverlay" onclick="closeVideo(event)">
+        <div class="video-container">
+            <button class="video-close" onclick="closeVideo()">✕</button>
+            <div id="videoContent"></div>
+        </div>
+    </div>
+
+    <!-- АУДИОПЛЕЕР (скрытый) -->
+    <audio id="audioPlayer" onended="nextTrack()" onerror="handleAudioError()"></audio>
+
+    <script>
+        // ============================================
+        // ДАННЫЕ АРТИСТОВ
+        // ============================================
+        const artists = [
+            {
+                id: 1,
+                name: 'Милана Хаметова',
+                image: 'https://placehold.co/400x400/8b5cf6/fff?text=МХ',
+                cover: '',
+                tracks: [
+                    { id: 101, title: 'Лучшая подруга', duration: '2:45', type: 'track', artist: 'Милана Хаметова', url: '', cover: '' },
+                    { id: 102, title: 'Школьная пора', duration: '3:12', type: 'track', artist: 'Милана Хаметова', url: '', cover: '' },
+                    { id: 103, title: 'Танцуй со мной', duration: '2:58', type: 'track', artist: 'Милана Хаметова feat. DJ Smash', url: '', cover: '' },
+                ],
+                clips: [
+                    { id: 201, title: 'Лучшая подруга (Клип)', duration: '3:10', type: 'video', artist: 'Милана Хаметова', url: '', cover: '' },
+                ],
+                films: [
+                    { id: 301, title: 'Школа волшебства', year: 2024, role: 'Главная роль', type: 'film', url: 'https://www.kinopoisk.ru/film/12345/' },
+                ],
+                serials: [
+                    { id: 401, title: 'Подростки', year: 2025, role: 'Эпизод (3 серии)', type: 'serial', url: 'https://www.kinopoisk.ru/series/67890/' },
+                ],
+                vibe: '#8b5cf6'
+            },
+            {
+                id: 2,
+                name: 'MACAN',
+                image: 'https://placehold.co/400x400/ef4444/fff?text=MACAN',
+                cover: '',
+                tracks: [
+                    { id: 501, title: 'ASPHALT 8', duration: '2:30', type: 'track', artist: 'MACAN', url: '', cover: '' },
+                    { id: 502, title: 'Пополам', duration: '3:05', type: 'track', artist: 'MACAN', url: '', cover: '' },
+                    { id: 503, title: 'Бенз', duration: '2:50', type: 'track', artist: 'MACAN', url: '', cover: '' },
+                    { id: 504, title: 'Спойлер', duration: '2:40', type: 'track', artist: 'MACAN', url: '', cover: '' },
+                ],
+                clips: [
+                    { id: 601, title: 'ASPHALT 8 (Клип)', duration: '3:00', type: 'video', artist: 'MACAN', url: '', cover: '' },
+                    { id: 602, title: 'Пополам (Lyric Video)', duration: '3:05', type: 'video', artist: 'MACAN', url: '', cover: '' },
+                ],
+                films: [],
+                serials: [],
+                vibe: '#ef4444'
+            },
+            {
+                id: 3,
+                name: 'INSTASAMKA',
+                image: 'https://placehold.co/400x400/f59e0b/fff?text=IS',
+                cover: '',
+                tracks: [
+                    { id: 701, title: 'За деньги да', duration: '2:20', type: 'track', artist: 'INSTASAMKA', url: '', cover: '' },
+                    { id: 702, title: 'MONEYDEALER', duration: '2:45', type: 'track', artist: 'INSTASAMKA', url: '', cover: '' },
+                ],
+                clips: [
+                    { id: 801, title: 'За деньги да (Клип)', duration: '2:45', type: 'video', artist: 'INSTASAMKA', url: '', cover: '' },
+                ],
+                films: [],
+                serials: [
+                    { id: 901, title: 'Реальные пацаны', year: 2024, role: 'Камео', type: 'serial', url: 'https://www.kinopoisk.ru/series/11111/' },
+                ],
+                vibe: '#f59e0b'
+            }
+        ];
+
+        // ============================================
+        // СОСТОЯНИЕ
+        // ============================================
+        let queue = [];
+        let currentIndex = -1;
+        let isPlaying = false;
+        let currentArtistView = null;
+
+        // ============================================
+        // ОТРИСОВКА АРТИСТОВ
+        // ============================================
+        function renderArtists(filter = '') {
+            const grid = document.getElementById('artistsGrid');
+            const query = filter.toLowerCase().trim();
+
+            const filtered = query ? artists.filter(a => {
+                if (a.name.toLowerCase().includes(query)) return true;
+                if (a.tracks.some(t => t.title.toLowerCase().includes(query))) return true;
+                if (a.clips.some(c => c.title.toLowerCase().includes(query))) return true;
+                if (a.films.some(f => f.title.toLowerCase().includes(query))) return true;
+                if (a.serials.some(s => s.title.toLowerCase().includes(query))) return true;
+                return false;
+            }) : artists;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>Ничего не найдено</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(a => `
+        <div class="artist-card" onclick="openArtist(${a.id})">
+            <img src="${a.image}" alt="${a.name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/333/fff?text=${encodeURIComponent(a.name[0])}'">
+            <span class="artist-badge">${a.tracks.length + a.clips.length} треков</span>
+            <div class="artist-name">${a.name}</div>
+            <div class="artist-meta">${a.tracks.length} треков · ${a.clips.length} клипов${a.films.length ? ' · ' + a.films.length + ' фильмов' : ''}${a.serials.length ? ' · ' + a.serials.length + ' сериалов' : ''}</div>
+        </div>
+    `).join('');
+        }
+
+        // ============================================
+        // ДЕТАЛЬНАЯ СТРАНИЦА АРТИСТА
+        // ============================================
+        function openArtist(id) {
+            const a = artists.find(x => x.id === id);
+            if (!a) return;
+            currentArtistView = a;
+
+            document.getElementById('artistsView').style.display = 'none';
+            document.documentElement.style.setProperty('--accent', a.vibe);
+            document.documentElement.style.setProperty('--accent-glow', a.vibe + '40');
+
+            const detail = document.getElementById('artistDetail');
+            detail.innerHTML = `
+        <button class="btn back-btn" onclick="showArtists()">← Ко всем артистам</button>
+        <div class="artist-header">
+            <img src="${a.image}" alt="${a.name}" onerror="this.src='https://placehold.co/400x400/333/fff?text=${encodeURIComponent(a.name[0])}'">
+            <div>
+                <h1>${a.name}</h1>
+                <p class="meta">${a.tracks.length} треков · ${a.clips.length} клипов · ${a.films.length} фильмов · ${a.serials.length} сериалов</p>
+                <button class="btn btn-accent" style="margin-top:16px;" onclick="playArtistTracks(${a.id})">▶ Воспроизвести всё</button>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="switchDetailTab('tracks')">🎵 Треки<span class="tab-count">${a.tracks.length}</span></button>
+            ${a.clips.length ? `<button class="tab" onclick="switchDetailTab('clips')">🎬 Клипы<span class="tab-count">${a.clips.length}</span></button>` : ''}
+            ${a.films.length ? `<button class="tab" onclick="switchDetailTab('films')">🎥 Фильмы<span class="tab-count">${a.films.length}</span></button>` : ''}
+            ${a.serials.length ? `<button class="tab" onclick="switchDetailTab('serials')">📺 Сериалы<span class="tab-count">${a.serials.length}</span></button>` : ''}
+        </div>
+        <div id="tabContent"></div>
+    `;
+            detail.classList.add('open');
+            switchDetailTab('tracks');
+        }
+
+        function switchDetailTab(tab) {
+            const a = currentArtistView;
+            if (!a) return;
+
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => {
+                if ((tab === 'tracks' && t.textContent.includes('Треки')) ||
+                    (tab === 'clips' && t.textContent.includes('Клипы')) ||
+                    (tab === 'films' && t.textContent.includes('Фильмы')) ||
+                    (tab === 'serials' && t.textContent.includes('Сериалы'))) {
+                    t.classList.add('active');
+                }
+            });
+
+            const content = document.getElementById('tabContent');
+
+            if (tab === 'tracks') {
+                content.innerHTML = a.tracks.length
+                    ? `<div class="track-list">${a.tracks.map(t => renderTrackItem(t)).join('')}</div>`
+                    : '<div class="empty-state"><div class="empty-icon">🎵</div>Нет треков</div>';
+            } else if (tab === 'clips') {
+                content.innerHTML = a.clips.length
+                    ? `<div class="track-list">${a.clips.map(c => renderTrackItem(c)).join('')}</div>`
+                    : '<div class="empty-state"><div class="empty-icon">🎬</div>Нет клипов</div>';
+            } else if (tab === 'films') {
+                content.innerHTML = a.films.length
+                    ? a.films.map(f => renderMediaItem(f, '🎥')).join('')
+                    : '<div class="empty-state"><div class="empty-icon">🎥</div>Нет фильмов</div>';
+            } else if (tab === 'serials') {
+                content.innerHTML = a.serials.length
+                    ? a.serials.map(s => renderMediaItem(s, '📺')).join('')
+                    : '<div class="empty-state"><div class="empty-icon">📺</div>Нет сериалов</div>';
+            }
+        }
+
+        function renderTrackItem(item) {
+            const isCurrent = queue[currentIndex]?.id === item.id;
+            const icon = item.type === 'video' ? '🎬' : '🎵';
+            return `
+        <div class="track-item ${isCurrent ? 'playing' : ''}">
+            <div class="track-cover" style="background:${currentArtistView?.vibe || '#333'};">${icon}</div>
+            <div class="track-info">
+                <div class="track-title">${item.title}</div>
+                <div class="track-artist">${item.artist || currentArtistView?.name || ''}</div>
+            </div>
+            <div class="track-duration">${item.duration}</div>
+            <button class="track-add" onclick="event.stopPropagation(); addToQueueAndPlay(${JSON.stringify(item).replace(/"/g, '&quot;')})">+ В очередь</button>
+        </div>
+    `;
+        }
+
+        function renderMediaItem(item, icon) {
+            return `
+        <div class="media-card">
+            <div class="media-icon">${icon}</div>
+            <div class="media-info">
+                <div class="media-title">${item.title} (${item.year})</div>
+                <div class="media-role">${item.role}</div>
+            </div>
+            <div class="media-year">${item.year}</div>
+            <a href="${item.url}" target="_blank" rel="noopener" class="btn btn-sm">Смотреть →</a>
+        </div>
+    `;
+        }
+
+        function showArtists() {
+            document.getElementById('artistsView').style.display = 'block';
+            document.getElementById('artistDetail').classList.remove('open');
+            currentArtistView = null;
+            document.documentElement.style.setProperty('--accent', '#8b5cf6');
+            document.documentElement.style.setProperty('--accent-glow', 'rgba(139,92,246,0.3)');
+        }
+
+        // ============================================
+        // ОЧЕРЕДЬ И ПЛЕЕР
+        // ============================================
+        function addToQueue(item) {
+            queue.push({ ...item });
+            renderQueue();
+            if (queue.length === 1) {
+                currentIndex = 0;
+                playCurrent();
+            }
+        }
+
+        function addToQueueAndPlay(item) {
+            queue.push({ ...item });
+            currentIndex = queue.length - 1;
+            renderQueue();
+            playCurrent();
+        }
+
+        function renderQueue() {
+            const list = document.getElementById('queueList');
+            list.innerHTML = queue.map((item, i) => `
+        <div class="queue-item ${i === currentIndex ? 'active' : ''}" onclick="playIndex(${i})">
+            ${item.type === 'video' ? '🎬' : '🎵'} ${item.title}
+            <span class="remove-queue" onclick="event.stopPropagation(); removeFromQueue(${i})">×</span>
+        </div>
+    `).join('');
+        }
+
+        function removeFromQueue(i) {
+            if (queue.length === 0) return;
+            if (i === currentIndex) stopPlayback();
+            queue.splice(i, 1);
+            if (i < currentIndex) currentIndex--;
+            if (currentIndex >= queue.length) currentIndex = queue.length - 1;
+            if (queue.length === 0) {
+                currentIndex = -1;
+                stopPlayback();
+            } else if (i <= currentIndex) {
+                playCurrent();
+            }
+            renderQueue();
+        }
+
+        function clearQueue() {
+            if (!confirm('Очистить очередь?')) return;
+            stopPlayback();
+            queue = [];
+            currentIndex = -1;
+            renderQueue();
+        }
+
+        function playIndex(i) {
+            currentIndex = i;
+            playCurrent();
+        }
+
+        function playCurrent() {
+            const audio = document.getElementById('audioPlayer');
+            audio.pause();
+            closeVideo();
+
+            if (currentIndex < 0 || currentIndex >= queue.length) {
+                document.getElementById('currentTrack').textContent = 'Ничего не играет';
+                document.getElementById('currentArtist').textContent = '';
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶';
+                renderQueue();
+                return;
+            }
+
+            const item = queue[currentIndex];
+            document.getElementById('currentTrack').textContent = item.title;
+            document.getElementById('currentArtist').textContent = item.artist || '';
+
+            if (item.type === 'video') {
+                if (item.url && (item.url.includes('youtube.com') || item.url.includes('youtu.be'))) {
+                    // YouTube
+                    let videoId = item.url;
+                    if (item.url.includes('watch?v=')) {
+                        videoId = item.url.split('watch?v=')[1].split('&')[0];
+                    } else if (item.url.includes('youtu.be/')) {
+                        videoId = item.url.split('youtu.be/')[1].split('?')[0];
+                    } else if (item.url.includes('embed/')) {
+                        videoId = item.url.split('embed/')[1].split('?')[0];
+                    }
+                    document.getElementById('videoContent').innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                } else if (item.url) {
+                    document.getElementById('videoContent').innerHTML = `<video src="${item.url}" autoplay controls onended="nextTrack()"></video>`;
+                } else {
+                    document.getElementById('videoContent').innerHTML = `<div style="text-align:center;padding:60px;color:#fff;"><p>🎬 Демо-клип: ${item.title}</p><p style="color:#999;">Добавьте ссылку на видео в url</p></div>`;
+                }
+                document.getElementById('videoOverlay').classList.add('open');
+                isPlaying = true;
+            } else if (item.type === 'track') {
+                if (item.url) {
+                    audio.src = item.url;
+                    audio.play().catch(() => {
+                        document.getElementById('currentTrack').textContent = item.title + ' (ошибка загрузки)';
+                    });
+                } else {
+                    document.getElementById('currentTrack').textContent = item.title + ' (демо)';
+                }
+                isPlaying = true;
+            }
+
+            document.getElementById('playBtn').textContent = '⏸';
+            renderQueue();
+            scrollToCurrentInQueue();
+        }
+
+        function stopPlayback() {
+            const audio = document.getElementById('audioPlayer');
+            audio.pause();
+            audio.src = '';
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶';
+            document.getElementById('currentTrack').textContent = 'Ничего не играет';
+            document.getElementById('currentArtist').textContent = '';
+            closeVideo();
+            renderQueue();
+        }
+
+        function togglePlay() {
+            if (queue.length === 0) return;
+            if (isPlaying) {
+                stopPlayback();
+            } else {
+                playCurrent();
+            }
+        }
+
+        function nextTrack() {
+            if (queue.length === 0) return;
+            closeVideo();
+            currentIndex = (currentIndex + 1) % queue.length;
+            playCurrent();
+        }
+
+        function prevTrack() {
+            if (queue.length === 0) return;
+            closeVideo();
+            currentIndex = (currentIndex - 1 + queue.length) % queue.length;
+            playCurrent();
+        }
+
+        function scrollToCurrentInQueue() {
+            const active = document.querySelector('.queue-item.active');
+            if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function handleAudioError() {
+            document.getElementById('currentTrack').textContent = (queue[currentIndex]?.title || '') + ' (ошибка)';
+            setTimeout(nextTrack, 2000);
+        }
+
+        // ============================================
+        // ВИДЕО
+        // ============================================
+        function closeVideo(e) {
+            if (e && e.target !== document.getElementById('videoOverlay')) return;
+            document.getElementById('videoOverlay').classList.remove('open');
+            document.getElementById('videoContent').innerHTML = '';
+            const audio = document.getElementById('audioPlayer');
+            audio.pause();
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶';
+            renderQueue();
+        }
+
+        // ============================================
+        // ВОСПРОИЗВЕСТИ ВСЁ
+        // ============================================
+        function playAllTracks() {
+            queue = [];
+            artists.forEach(a => {
+                a.tracks.forEach(t => queue.push({ ...t }));
+                a.clips.forEach(c => queue.push({ ...c }));
+            });
+            currentIndex = 0;
+            renderQueue();
+            playCurrent();
+            showArtists();
+        }
+
+        function playArtistTracks(artistId) {
+            const a = artists.find(x => x.id === artistId);
+            if (!a) return;
+            queue = [];
+            a.tracks.forEach(t => queue.push({ ...t }));
+            a.clips.forEach(c => queue.push({ ...c }));
+            currentIndex = 0;
+            renderQueue();
+            playCurrent();
+        }
+
+        // ============================================
+        // ПОИСК
+        // ============================================
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            if (document.getElementById('artistDetail').classList.contains('open')) {
+                showArtists();
+            }
+            renderArtists(query);
+        }
+
+        // ============================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================
+        renderArtists();
+        renderQueue();
+    </script>
+
+</body>
+
+</html>
