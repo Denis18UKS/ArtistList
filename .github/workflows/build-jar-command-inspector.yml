@@ -29,7 +29,7 @@ jobs:
           node-version: '20'
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -37,8 +37,8 @@ jobs:
       - name: Extract source
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path app | Out-Null
-          Expand-Archive -Path jar-command-inspector-source.zip -DestinationPath app -Force
+          python -c "import zipfile; zipfile.ZipFile('jar-command-inspector-source.zip').extractall('app')"
+          if (!(Test-Path 'app/app.py')) { throw 'Source archive did not extract correctly' }
 
       - name: Install Python dependencies
         working-directory: app
