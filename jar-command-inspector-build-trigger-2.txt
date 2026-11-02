@@ -1,0 +1,1 @@
+Trigger fixed Windows build for Jar Command Inspector v0.1.1
