@@ -1,0 +1,79 @@
+name: Build Jar Command Inspector EXE
+
+on:
+  push:
+    branches:
+      - jar-command-inspector-build
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Extract source
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path app | Out-Null
+          Expand-Archive -Path jar-command-inspector-source.zip -DestinationPath app -Force
+
+      - name: Install Python dependencies
+        working-directory: app
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-build.txt
+
+      - name: Build React frontend
+        working-directory: app/frontend
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          node --test test/filter.test.mjs
+
+      - name: Run Python tests
+        working-directory: app
+        run: python -m pytest -q tests
+
+      - name: Build EXE
+        working-directory: app
+        run: python -m PyInstaller --noconfirm --clean JarCommandInspector.spec
+
+      - name: Verify EXE
+        shell: pwsh
+        run: |
+          $exe = 'app/dist/JarCommandInspector.exe'
+          if (!(Test-Path $exe)) { throw 'JarCommandInspector.exe was not created' }
+          $item = Get-Item $exe
+          Write-Host "Built: $($item.FullName) ($($item.Length) bytes)"
+          if ($item.Length -lt 1000000) { throw 'EXE is unexpectedly small' }
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JarCommandInspector-Windows-x64
+          path: app/dist/JarCommandInspector.exe
+          if-no-files-found: error
+          retention-days: 7
