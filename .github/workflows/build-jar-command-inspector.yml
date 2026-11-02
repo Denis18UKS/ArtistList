@@ -34,10 +34,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Extract source
+      - name: Rebuild and extract source
         shell: pwsh
         run: |
-          python -c "import zipfile; zipfile.ZipFile('jar-command-inspector-source.zip').extractall('app')"
+          python -c "import base64, pathlib; pathlib.Path('source.zip').write_bytes(base64.b64decode(pathlib.Path('jar-command-inspector-source.b64').read_text(encoding='ascii')))"
+          python -c "import zipfile; z=zipfile.ZipFile('source.zip'); print('ZIP entries:', len(z.namelist())); z.extractall('app')"
           if (!(Test-Path 'app/app.py')) { throw 'Source archive did not extract correctly' }
 
       - name: Install Python dependencies
